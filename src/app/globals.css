@@ -1,0 +1,200 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Buku Besar — a personal ledger printed in reverse.
+ * Black paper, white ink. Oxblood marks money out, banker green money in,
+ * ultramarine money that only moves. Brass belongs to the binding.
+ */
+
+:root {
+  color-scheme: dark;
+  --paper: #0d0c0b;
+  --block: #171613;
+  --raised: #221f1b;
+  --ink: #f3f0e9;
+  --rule-hair: #2c2823;
+  --rule-dense: #5a5348;
+  --deb: #d6584a;
+  --cre: #5fa97a;
+  --ult: #6e86c8;
+  --brass: #c9a227;
+}
+
+html,
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+}
+
+/* The book: a light pool from the desk lamp. */
+body {
+  background-image:
+    radial-gradient(1100px 620px at 18% -12%, rgba(201, 162, 39, 0.05), transparent 68%);
+  background-attachment: fixed;
+  font-family: var(--font-archivo), "Archivo", Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(214, 88, 74, 0.32);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--deb);
+  outline-offset: 2px;
+}
+
+input,
+select,
+textarea {
+  caret-color: var(--brass);
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0c0b;
+  border-left: 1px solid var(--rule-hair);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3a352e;
+  border: 1px solid var(--rule-hair);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4d463c;
+}
+
+* {
+  scrollbar-color: #3a352e #0d0c0b;
+}
+
+@layer components {
+  /* A leaf of the book. */
+  .sheet {
+    background-color: var(--block);
+    border: 1px solid var(--rule-hair);
+    border-radius: 2px;
+  }
+
+  .sheet-raised {
+    background-color: var(--raised);
+    border: 1px solid var(--rule-dense);
+    border-radius: 2px;
+  }
+
+  /* Rule hierarchy: hairlines inside a group, a dense rule closing it,
+     a double rule before a total. */
+  .rule-hair {
+    border-bottom: 1px solid var(--rule-hair);
+  }
+
+  .rule-dense {
+    border-bottom: 1px solid var(--rule-dense);
+  }
+
+  .rule-double {
+    border-bottom: 1px solid var(--ink);
+    box-shadow: 0 2px 0 -1px var(--ink);
+  }
+  /* A double rule drawn above a total — the ledger closes the column. */
+  .rule-total {
+    border-top: 3px double var(--ink);
+  }
+
+
+  /* The marker ribbon. Never a full border — it overshoots its column. */
+  .ribbon {
+    position: relative;
+  }
+
+  .ribbon::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    bottom: -1px;
+    width: 2px;
+    background: var(--deb);
+    pointer-events: none;
+  }
+
+  /* Tabular figures for every number that is read as a quantity. */
+  .fig {
+    font-family: var(--font-ledger-mono), "Spline Sans Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  .stamp {
+    font-family: var(--font-ledger-mono), "Spline Sans Mono", monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  /* Bound fore-edge: the brass thread stitched along the spine. */
+  .fore-edge {
+    background-image: linear-gradient(
+      to right,
+      #000 0,
+      #000 2px,
+      rgba(201, 162, 39, 0.55) 2px,
+      rgba(201, 162, 39, 0.55) 3px,
+      #0a0a09 3px,
+      #0a0a09 5px
+    );
+  }
+}
+
+/* Recharts — the ledger draws its own ink. */
+.recharts-cartesian-grid line {
+  stroke: var(--rule-hair);
+}
+
+.recharts-cartesian-axis line,
+.recharts-cartesian-axis-tick line {
+  stroke: var(--rule-hair);
+}
+
+.recharts-text {
+  fill: #b8b0a1;
+  font-family: var(--font-ledger-mono), "Spline Sans Mono", monospace;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.recharts-default-tooltip {
+  background: var(--block) !important;
+  border: 1px solid var(--rule-dense) !important;
+  border-radius: 2px !important;
+}
+
+.recharts-tooltip-item,
+.recharts-tooltip-label {
+  color: var(--ink) !important;
+  font-family: var(--font-ledger-mono), "Spline Sans Mono", monospace !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.recharts-legend-item-text {
+  color: #b8b0a1 !important;
+  font-family: var(--font-ledger-mono), "Spline Sans Mono", monospace !important;
+  font-size: 11px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
